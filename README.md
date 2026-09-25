@@ -3,7 +3,6 @@
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2024%20edition-informational)](https://www.rust-lang.org/)
 [![Wayland](https://img.shields.io/badge/wayland-Hyprland-blueviolet)](https://hyprland.org)
-[![AUR package](https://img.shields.io/badge/aur-mcmojave--cursor--unified-blue)](https://aur.archlinux.org/packages/mcmojave-cursor-unified)
 
 A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor theme for Linux desktops, combining native **Hyprcursor** (vector SVG) and mathematically calibrated **XCursor** (X11 / XWayland) into a single canonical directory with a blazing-fast native Rust compiler.
 
@@ -11,7 +10,7 @@ A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor 
 
 ## 🎯 The Problems in Upstream Ports
 
-While McMojave is one of the cleanest cursor designs for Linux, existing packages on GitHub and AUR suffer from critical mathematical flaws that break desktop ergonomics:
+While McMojave is one of the cleanest cursor designs for Linux, existing packages on GitHub suffer from critical mathematical flaws that break desktop ergonomics:
 
 ```mermaid
 flowchart TD
@@ -71,17 +70,7 @@ Instead of fragile legacy Bash scripts and Python wrappers, this repository incl
 
 ## 🛠️ Installation
 
-### Arch Linux (AUR)
-
-Using your favorite AUR helper:
-
-```bash
-paru -S mcmojave-cursor-unified
-# or
-yay -S mcmojave-cursor-unified
-```
-
-### Build from Source
+### Build & Install from Source
 
 Requirements:
 - `rust` (Cargo, 2024 edition compatible, Rust 1.85+)
