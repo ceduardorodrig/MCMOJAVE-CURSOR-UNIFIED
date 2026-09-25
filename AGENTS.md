@@ -4,21 +4,23 @@ tags: [meta, agents, governance, linux, wayland]
 
 # AGENTS.md — MCMOJAVE-CURSOR-UNIFIED Governance Rules
 
-Este repositório contém o projeto **MCMOJAVE-CURSOR-UNIFIED**, um tema de cursor dual-spec (Hyprcursor vetorial + XCursor multi-resolução calibrado 1:1) com ferramenta de compilação em Rust nativo.
+This repository contains **MCMOJAVE-CURSOR-UNIFIED**, a dual-spec cursor theme (vector Hyprcursor + 1:1 calibrated multi-resolution XCursor) with a native Rust compiler tool.
 
-Ao modificar qualquer arquivo deste repositório, siga estas regras obrigatórias de governança:
+When modifying any file in this repository, follow these mandatory governance rules:
 
-## 🦀 Padrões Rust & Integridade
+**Language Tier:** A (Public OSS) — see [language-policy.md](file:///mnt/NVME_PCI/agentic-ai/governance/language-policy.md). All logs, CLI strings, documentation, and comments MUST be in English.
 
-1. **RUST NATIVO & SOBERANIA (RUST 2024)** — Todo código deve permanecer em Rust compilado nativo (`edition = "2024"`). Proibido scripts intermediários Python ou Bash legados (`ARCH-NO-PYTHON`).
+## 🦀 Rust Standards & Integrity
 
-2. **PROIBIÇÃO DE UNWRAP/EXPECT EM PRODUÇÃO (`RUST-NO-UNWRAP`)** — Tratamento de erros deve ser determinístico usando `?`, `match` ou fallback seguro (`unwrap_or`). O uso de `unwrap()` ou `expect()` causa pânico incondicional e é categorizado como tentativa de bypass.
+1. **NATIVE RUST & SOVEREIGNTY (RUST 2024)** — All code must remain in native compiled Rust (`edition = "2024"`). Intermediate Python or legacy Bash scripts are strictly prohibited (`ARCH-NO-PYTHON`).
 
-3. **VERIFICAÇÃO OBRIGATÓRIA DO STÊNIOSENTINEL (REGRA 0)** — Antes de qualquer commit ou conclusão de turno, é obrigatório executar `stenio --path .`. O Quality Gate deve aprovar com zero erros bloqueantes.
+2. **PROHIBITION OF UNWRAP/EXPECT IN PRODUCTION (`RUST-NO-UNWRAP`)** — Error handling must be deterministic using `?`, `match`, or safe fallbacks (`unwrap_or`). Using `unwrap()` or `expect()` in production triggers panics and is classified as a bypass attempt.
 
-4. **SEGURANÇA & ZERO SEGREDOS (`SEC-SECRETS`)** — Nenhuma credencial ou token deve ser adicionado ao código.
+3. **MANDATORY STENIOSENTINEL VERIFICATION (RULE 0)** — Before completing any turn or committing, execute `stenio --path .`. The Quality Gate must pass with zero blocking errors.
 
-5. **DISCLAIMER PADRONIZADO NO README (`DOC-VIBE-DISCLAIMER`)** — O `README.md` raiz deve manter o disclaimer padronizado de governança humana-IA:
+4. **ZERO CREDENTIALS & SECRETS (`SEC-SECRETS`)** — Never commit credentials, tokens, or private secrets.
+
+5. **STANDARDIZED README DISCLAIMER (`DOC-VIBE-DISCLAIMER`)** — The root `README.md` must preserve the standardized vibe-coded governance disclaimer:
    ```markdown
    <div align="center">
 

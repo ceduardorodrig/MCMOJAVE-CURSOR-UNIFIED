@@ -16,16 +16,16 @@ fn print_help() {
     println!(
         r#"McMojave Cursor Unified Builder
 
-Uso:
-    mcmojave-cursor-unified [OPÇÕES]
+Usage:
+    mcmojave-cursor-unified [OPTIONS]
 
-Opções:
-    -o, --output <DIR>   Diretório de saída para o tema compilado (padrão: dist/McMojave)
-    -a, --assets <DIR>   Diretório contendo os SVGs originais (padrão: assets/svg)
-    -c, --cache <DIR>    Diretório de cache para PNGs intermediários (padrão: target/png-cache)
-    --clean              Remove o diretório de saída e de cache antes de compilar
-    -h, --help           Exibe esta mensagem de ajuda
-    -v, --version        Exibe a versão do compilador
+Options:
+    -o, --output <DIR>   Output directory for the compiled theme (default: dist/McMojave)
+    -a, --assets <DIR>   Directory containing the original SVGs (default: assets/svg)
+    -c, --cache <DIR>    Cache directory for intermediate PNGs (default: target/png-cache)
+    --clean              Remove the output and cache directories before building
+    -h, --help           Show this help message
+    -v, --version        Show the compiler version
 "#
     );
 }
@@ -58,7 +58,7 @@ fn main() -> ExitCode {
                     output_dir = PathBuf::from(&args[i + 1]);
                     i += 2;
                 } else {
-                    eprintln!("Erro: Opção '--output' requer um argumento de diretório.");
+                    eprintln!("Error: option '--output' requires a directory argument.");
                     return ExitCode::FAILURE;
                 }
             }
@@ -67,7 +67,7 @@ fn main() -> ExitCode {
                     assets_dir = PathBuf::from(&args[i + 1]);
                     i += 2;
                 } else {
-                    eprintln!("Erro: Opção '--assets' requer um argumento de diretório.");
+                    eprintln!("Error: option '--assets' requires a directory argument.");
                     return ExitCode::FAILURE;
                 }
             }
@@ -76,26 +76,26 @@ fn main() -> ExitCode {
                     cache_dir = PathBuf::from(&args[i + 1]);
                     i += 2;
                 } else {
-                    eprintln!("Erro: Opção '--cache' requer um argumento de diretório.");
+                    eprintln!("Error: option '--cache' requires a directory argument.");
                     return ExitCode::FAILURE;
                 }
             }
             unknown => {
-                eprintln!("Erro: Argumento desconhecido '{unknown}'. Use '--help' para instruções.");
+                eprintln!("Error: unknown argument '{unknown}'. Use '--help' for usage.");
                 return ExitCode::FAILURE;
             }
         }
     }
 
     if clean_before {
-        println!("🧹 Limpando diretórios antigos...");
+        println!("🧹 Cleaning old directories...");
         let _ = fs::remove_dir_all(&output_dir);
         let _ = fs::remove_dir_all(&cache_dir);
     }
 
     if !assets_dir.exists() {
         eprintln!(
-            "Erro: Diretório de assets SVG não encontrado em '{}'",
+            "Error: SVG assets directory not found at '{}'",
             assets_dir.display()
         );
         return ExitCode::FAILURE;
@@ -110,7 +110,7 @@ fn main() -> ExitCode {
     match build_all(&paths) {
         Ok(()) => ExitCode::SUCCESS,
         Err(err) => {
-            eprintln!("Falha na compilação: {err}");
+            eprintln!("Build failed: {err}");
             ExitCode::FAILURE
         }
     }

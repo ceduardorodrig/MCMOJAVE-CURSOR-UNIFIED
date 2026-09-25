@@ -27,22 +27,22 @@ pub fn build_all(paths: &BuildPaths<'_>) -> Result<(), AppError> {
     fs::create_dir_all(&cursors_dir)?;
     fs::create_dir_all(paths.cache_dir)?;
 
-    println!("🎨 [1/5] Compilando Hyprcursor archives (.hlc)...");
+    println!("🎨 [1/5] Building Hyprcursor archives (.hlc)...");
     build_hyprcursors(paths.assets_svg_dir, &hyprcursors_dir)?;
 
-    println!("⚡ [2/5] Rasterizando PNGs multi-resolução com rsvg-convert...");
+    println!("⚡ [2/5] Rasterizing multi-resolution PNGs with rsvg-convert...");
     rasterize_all_pngs(paths.assets_svg_dir, paths.cache_dir)?;
 
-    println!("📦 [3/5] Gerando cursores XCursor calibrados com xcursorgen...");
+    println!("📦 [3/5] Generating calibrated XCursor cursors with xcursorgen...");
     build_xcursors(paths.cache_dir, &cursors_dir)?;
 
-    println!("🔗 [4/5] Criando symlinks e aliases XCursor...");
+    println!("🔗 [4/5] Creating XCursor symlinks and aliases...");
     create_xcursor_aliases(&cursors_dir)?;
 
-    println!("📝 [5/5] Escrevendo manifest.hl e index.theme...");
+    println!("📝 [5/5] Writing manifest.hl and index.theme...");
     write_theme_metadata(paths.output_dir)?;
 
-    println!("✨ McMojave compilado com sucesso em: {}", paths.output_dir.display());
+    println!("✨ McMojave built successfully at: {}", paths.output_dir.display());
     Ok(())
 }
 
