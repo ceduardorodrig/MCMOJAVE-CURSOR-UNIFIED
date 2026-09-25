@@ -2,7 +2,7 @@ pkgbase = mcmojave-cursor-unified
 	pkgdesc = Dual-spec unified McMojave cursor theme (Hyprcursor vector + 1:1 calibrated XCursor)
 	pkgver = 1.0.0
 	pkgrel = 1
-	url = https://github.com/ceduardorodrig/mcmojave-cursor-unified
+	url = https://github.com/ceduardorodrig/MCMOJAVE-CURSOR-UNIFIED
 	arch = x86_64
 	license = GPL-3.0-or-later
 	makedepends = cargo
@@ -12,7 +12,7 @@ pkgbase = mcmojave-cursor-unified
 	provides = mcmojave-hyprcursor
 	conflicts = mcmojave-cursors
 	conflicts = mcmojave-hyprcursor
-	source = mcmojave-cursor-unified-1.0.0.tar.gz::https://github.com/ceduardorodrig/mcmojave-cursor-unified/archive/refs/tags/v1.0.0.tar.gz
+	source = mcmojave-cursor-unified-1.0.0.tar.gz::https://github.com/ceduardorodrig/MCMOJAVE-CURSOR-UNIFIED/archive/refs/tags/v1.0.0.tar.gz
 	sha256sums = SKIP
 
 pkgname = mcmojave-cursor-unified

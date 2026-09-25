@@ -6,8 +6,8 @@ authors = ["Carlos Eduardo Rodrigues <ceduardorodrig@gmail.com>"]
 description = "Dual-spec unified McMojave cursor theme (Hyprcursor + 1:1 calibrated XCursor) with native Rust builder"
 readme = "README.md"
 license = "GPL-3.0-or-later"
-repository = "https://github.com/ceduardorodrig/mcmojave-cursor-unified"
-homepage = "https://github.com/ceduardorodrig/mcmojave-cursor-unified"
+repository = "https://github.com/ceduardorodrig/MCMOJAVE-CURSOR-UNIFIED"
+homepage = "https://github.com/ceduardorodrig/MCMOJAVE-CURSOR-UNIFIED"
 keywords = ["cursor", "hyprcursor", "xcursor", "wayland", "hyprland"]
 categories = ["command-line-utilities"]
 

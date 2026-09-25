@@ -1,4 +1,4 @@
-# McMojave Cursor Unified
+# MCMOJAVE-CURSOR-UNIFIED
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2024%20edition-informational)](https://www.rust-lang.org/)
@@ -89,8 +89,8 @@ Requirements:
 - `xorg-xcursorgen` (`xcursorgen`)
 
 ```bash
-git clone https://github.com/ceduardorodrig/mcmojave-cursor-unified.git
-cd mcmojave-cursor-unified
+git clone https://github.com/ceduardorodrig/MCMOJAVE-CURSOR-UNIFIED.git
+cd MCMOJAVE-CURSOR-UNIFIED
 cargo run --release
 
 # Install system-wide:
