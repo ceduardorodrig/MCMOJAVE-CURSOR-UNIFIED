@@ -1,0 +1,16 @@
+[package]
+name = "mcmojave-cursor-unified"
+version = "1.0.0"
+edition = "2024"
+authors = ["Carlos Eduardo Rodrigues <ceduardorodrig@gmail.com>"]
+description = "Dual-spec unified McMojave cursor theme (Hyprcursor + 1:1 calibrated XCursor) with native Rust builder"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/ceduardorodrig/mcmojave-cursor-unified"
+homepage = "https://github.com/ceduardorodrig/mcmojave-cursor-unified"
+keywords = ["cursor", "hyprcursor", "xcursor", "wayland", "hyprland"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+rayon = "1.10"
+zip = { version = "2.2", default-features = false, features = ["deflate"] }
