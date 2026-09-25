@@ -46,7 +46,7 @@ Upstream distributed Hyprcursor under `McMojave` and XCursor under `McMojave-cur
 
 ---
 
-## 🧵 The Thread / O Fio da Meada
+## 🧵 The Thread
 
 This repository was born out of an everyday desktop frustration: switching between native Wayland applications (running fluidly on Hyprland + Noctalia) and legacy XWayland / Steam games on Arch Linux / CachyOS, only to experience jarring cursor size mismatches and inaccurate click hotspots.
 
