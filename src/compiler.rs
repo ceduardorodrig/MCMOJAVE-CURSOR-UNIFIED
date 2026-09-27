@@ -388,7 +388,7 @@ fn write_theme_metadata(output_dir: &Path) -> Result<(), AppError> {
 
     let manifest_content = r#"name = McMojave
 description = Unified McMojave cursor theme (Hyprcursor vector + 1:1 calibrated XCursor)
-version = 1.0.0
+version = 1.1.0
 cursors_directory = hyprcursors
 "#;
 

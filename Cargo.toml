@@ -1,6 +1,6 @@
 [package]
 name = "mcmojave-cursor-unified"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2024"
 authors = ["Carlos Eduardo Rodrigues <ceduardorodrig@gmail.com>"]
 description = "Dual-spec unified McMojave cursor theme (Hyprcursor + 1:1 calibrated XCursor) with native Rust builder"

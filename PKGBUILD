@@ -1,7 +1,7 @@
 # Maintainer: Carlos Eduardo Rodrigues <ceduardorodrig@gmail.com>
 
 pkgname=mcmojave-cursor-unified
-pkgver=1.0.0
+pkgver=1.1.0
 pkgrel=1
 pkgdesc="Dual-spec unified McMojave cursor theme (Hyprcursor vector + 1:1 calibrated XCursor)"
 arch=('x86_64')
