@@ -1,5 +1,8 @@
 /target
 /dist
 *.png
+!assets/preview/**/*.png
+!assets/preview/*.png
 *.curcfg
 .DS_Store
+

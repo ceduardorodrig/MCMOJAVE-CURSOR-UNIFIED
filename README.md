@@ -18,8 +18,8 @@ A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor 
 
 | Cursor | Preview | Hotspot (X, Y) | Target & Legacy Aliases | Description |
 | :--- | :---: | :---: | :--- | :--- |
-| `wait` | <img src="assets/preview/wait.gif" width="40" alt="wait cursor"> | `(0.50, 0.50)` | `watch` | 24-frame macOS spinning beachball for blocking app operations. |
-| `progress` | <img src="assets/preview/progress.gif" width="40" alt="progress cursor"> | `(0.16, 0.13)` | `half-busy`, `left_ptr_watch` | Primary pointer with spinning beachball for background activity. |
+| `wait` | <img src="assets/preview/wait.gif" width="48" alt="wait cursor"> | `(0.50, 0.50)` | `watch` | 24-frame macOS spinning beachball for blocking app operations. |
+| `progress` | <img src="assets/preview/progress.gif" width="48" alt="progress cursor"> | `(0.16, 0.13)` | `half-busy`, `left_ptr_watch` | Primary pointer with spinning beachball for background activity. |
 
 ### Cursors by Category
 
@@ -28,16 +28,16 @@ A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor 
 
 | Cursor | Icon | Hotspot | Aliases / Overrides | Description |
 | :--- | :---: | :---: | :--- | :--- |
-| `default` | <img src="assets/preview/icons/default.png" width="28"> | `(0.16, 0.13)` | `arrow`, `left_ptr` | Standard macOS desktop arrow pointer. |
-| `pointer` | <img src="assets/preview/icons/pointer.png" width="28"> | `(0.39, 0.19)` | `hand1`, `hand2`, `pointing_hand` | Pointing hand (calibrated index fingertip hotspot). |
-| `text` | <img src="assets/preview/icons/text.png" width="28"> | `(0.47, 0.47)` | `ibeam`, `xterm` | Horizontal text selection I-beam. |
-| `vertical-text` | <img src="assets/preview/icons/vertical-text.png" width="28"> | `(0.47, 0.47)` | — | Vertical text editing beam. |
-| `crosshair` | <img src="assets/preview/icons/crosshair.png" width="28"> | `(0.48, 0.48)` | `cross` | Precise coordinate crosshair selector. |
-| `cell` | <img src="assets/preview/icons/cell.png" width="28"> | `(0.50, 0.50)` | `plus` | Table / spreadsheet cell selection cross. |
-| `color-picker` | <img src="assets/preview/icons/color-picker.png" width="28"> | `(0.08, 0.91)` | — | Eyedropper tool for screen color sampling. |
-| `pencil` | <img src="assets/preview/icons/pencil.png" width="28"> | `(0.08, 0.91)` | — | Drawing and freehand annotation tool. |
-| `draft` | <img src="assets/preview/icons/draft.png" width="28"> | `(0.08, 0.88)` | — | Precision compass / draft tool. |
-| `help` | <img src="assets/preview/icons/help.png" width="28"> | `(0.16, 0.13)` | `left_ptr_help`, `whats_this` | Pointer with contextual question mark badge. |
+| `default` | <img src="assets/preview/icons/default.png" width="36"> | `(0.16, 0.13)` | `arrow`, `left_ptr` | Standard macOS desktop arrow pointer. |
+| `pointer` | <img src="assets/preview/icons/pointer.png" width="36"> | `(0.39, 0.19)` | `hand1`, `hand2`, `pointing_hand` | Pointing hand (calibrated index fingertip hotspot). |
+| `text` | <img src="assets/preview/icons/text.png" width="36"> | `(0.47, 0.47)` | `ibeam`, `xterm` | Horizontal text selection I-beam. |
+| `vertical-text` | <img src="assets/preview/icons/vertical-text.png" width="36"> | `(0.47, 0.47)` | — | Vertical text editing beam. |
+| `crosshair` | <img src="assets/preview/icons/crosshair.png" width="36"> | `(0.48, 0.48)` | `cross` | Precise coordinate crosshair selector. |
+| `cell` | <img src="assets/preview/icons/cell.png" width="36"> | `(0.50, 0.50)` | `plus` | Table / spreadsheet cell selection cross. |
+| `color-picker` | <img src="assets/preview/icons/color-picker.png" width="36"> | `(0.08, 0.91)` | — | Eyedropper tool for screen color sampling. |
+| `pencil` | <img src="assets/preview/icons/pencil.png" width="36"> | `(0.08, 0.91)` | — | Drawing and freehand annotation tool. |
+| `draft` | <img src="assets/preview/icons/draft.png" width="36"> | `(0.08, 0.88)` | — | Precision compass / draft tool. |
+| `help` | <img src="assets/preview/icons/help.png" width="36"> | `(0.16, 0.13)` | `left_ptr_help`, `whats_this` | Pointer with contextual question mark badge. |
 
 </details>
 
@@ -46,14 +46,14 @@ A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor 
 
 | Cursor | Icon | Hotspot | Aliases / Overrides | Description |
 | :--- | :---: | :---: | :--- | :--- |
-| `col-resize` | <img src="assets/preview/icons/col-resize.png" width="28"> | `(0.50, 0.50)` | `split_h` | Horizontal column divider resizing. |
-| `row-resize` | <img src="assets/preview/icons/row-resize.png" width="28"> | `(0.50, 0.50)` | `split_v` | Vertical row divider resizing. |
-| `size_hor` | <img src="assets/preview/icons/size_hor.png" width="28"> | `(0.50, 0.50)` | `e-resize`, `w-resize`, `h_double_arrow` | Window horizontal edge resizing. |
-| `size_ver` | <img src="assets/preview/icons/size_ver.png" width="28"> | `(0.50, 0.50)` | `n-resize`, `s-resize`, `v_double_arrow` | Window vertical edge resizing. |
-| `size_bdiag` | <img src="assets/preview/icons/size_bdiag.png" width="28"> | `(0.50, 0.50)` | `nesw-resize` | Diagonal resizing (SW to NE). |
-| `size_fdiag` | <img src="assets/preview/icons/size_fdiag.png" width="28"> | `(0.50, 0.50)` | `nwse-resize` | Diagonal resizing (NW to SE). |
-| `all-scroll` | <img src="assets/preview/icons/all-scroll.png" width="28"> | `(0.50, 0.50)` | — | Four-way scrolling mode. |
-| `fleur` | <img src="assets/preview/icons/fleur.png" width="28"> | `(0.50, 0.50)` | `size_all` | Move / reposition window or canvas in all directions. |
+| `col-resize` | <img src="assets/preview/icons/col-resize.png" width="36"> | `(0.50, 0.50)` | `split_h` | Horizontal column divider resizing. |
+| `row-resize` | <img src="assets/preview/icons/row-resize.png" width="36"> | `(0.50, 0.50)` | `split_v` | Vertical row divider resizing. |
+| `size_hor` | <img src="assets/preview/icons/size_hor.png" width="36"> | `(0.50, 0.50)` | `e-resize`, `w-resize`, `h_double_arrow` | Window horizontal edge resizing. |
+| `size_ver` | <img src="assets/preview/icons/size_ver.png" width="36"> | `(0.50, 0.50)` | `n-resize`, `s-resize`, `v_double_arrow` | Window vertical edge resizing. |
+| `size_bdiag` | <img src="assets/preview/icons/size_bdiag.png" width="36"> | `(0.50, 0.50)` | `nesw-resize` | Diagonal resizing (SW to NE). |
+| `size_fdiag` | <img src="assets/preview/icons/size_fdiag.png" width="36"> | `(0.50, 0.50)` | `nwse-resize` | Diagonal resizing (NW to SE). |
+| `all-scroll` | <img src="assets/preview/icons/all-scroll.png" width="36"> | `(0.50, 0.50)` | — | Four-way scrolling mode. |
+| `fleur` | <img src="assets/preview/icons/fleur.png" width="36"> | `(0.50, 0.50)` | `size_all` | Move / reposition window or canvas in all directions. |
 
 </details>
 
@@ -62,14 +62,14 @@ A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor 
 
 | Cursor | Icon | Hotspot | Aliases / Overrides | Description |
 | :--- | :---: | :---: | :--- | :--- |
-| `top_side` | <img src="assets/preview/icons/top_side.png" width="28"> | `(0.50, 0.13)` | — | Top window border handle. |
-| `bottom_side` | <img src="assets/preview/icons/bottom_side.png" width="28"> | `(0.50, 0.84)` | — | Bottom window border handle. |
-| `left_side` | <img src="assets/preview/icons/left_side.png" width="28"> | `(0.13, 0.50)` | — | Left window border handle. |
-| `right_side` | <img src="assets/preview/icons/right_side.png" width="28"> | `(0.84, 0.50)` | — | Right window border handle. |
-| `top_left_corner` | <img src="assets/preview/icons/top_left_corner.png" width="28"> | `(0.16, 0.13)` | `nw-resize`, `ul_angle` | Top-left corner window resize. |
-| `top_right_corner` | <img src="assets/preview/icons/top_right_corner.png" width="28"> | `(0.84, 0.13)` | `ne-resize`, `ur_angle` | Top-right corner window resize. |
-| `bottom_left_corner` | <img src="assets/preview/icons/bottom_left_corner.png" width="28"> | `(0.16, 0.84)` | `sw-resize`, `ll_angle` | Bottom-left corner window resize. |
-| `bottom_right_corner` | <img src="assets/preview/icons/bottom_right_corner.png" width="28"> | `(0.84, 0.84)` | `se-resize`, `lr_angle` | Bottom-right corner window resize. |
+| `top_side` | <img src="assets/preview/icons/top_side.png" width="36"> | `(0.50, 0.13)` | — | Top window border handle. |
+| `bottom_side` | <img src="assets/preview/icons/bottom_side.png" width="36"> | `(0.50, 0.84)` | — | Bottom window border handle. |
+| `left_side` | <img src="assets/preview/icons/left_side.png" width="36"> | `(0.13, 0.50)` | — | Left window border handle. |
+| `right_side` | <img src="assets/preview/icons/right_side.png" width="36"> | `(0.84, 0.50)` | — | Right window border handle. |
+| `top_left_corner` | <img src="assets/preview/icons/top_left_corner.png" width="36"> | `(0.16, 0.13)` | `nw-resize`, `ul_angle` | Top-left corner window resize. |
+| `top_right_corner` | <img src="assets/preview/icons/top_right_corner.png" width="36"> | `(0.84, 0.13)` | `ne-resize`, `ur_angle` | Top-right corner window resize. |
+| `bottom_left_corner` | <img src="assets/preview/icons/bottom_left_corner.png" width="36"> | `(0.16, 0.84)` | `sw-resize`, `ll_angle` | Bottom-left corner window resize. |
+| `bottom_right_corner` | <img src="assets/preview/icons/bottom_right_corner.png" width="36"> | `(0.84, 0.84)` | `se-resize`, `lr_angle` | Bottom-right corner window resize. |
 
 </details>
 
@@ -78,14 +78,14 @@ A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor 
 
 | Cursor | Icon | Hotspot | Aliases / Overrides | Description |
 | :--- | :---: | :---: | :--- | :--- |
-| `openhand` | <img src="assets/preview/icons/openhand.png" width="28"> | `(0.50, 0.50)` | `grab` | Open hand for grabbing objects or panning canvas. |
-| `dnd-move` | <img src="assets/preview/icons/dnd-move.png" width="28"> | `(0.50, 0.50)` | `closedhand`, `grabbing`, `move` | Closed hand actively grabbing / dragging. |
-| `copy` | <img src="assets/preview/icons/copy.png" width="28"> | `(0.16, 0.13)` | `dnd-copy` | Dragging with duplication / copy badge (+). |
-| `alias` | <img src="assets/preview/icons/alias.png" width="28"> | `(0.16, 0.13)` | `link` | Dragging to create a shortcut / link arrow badge. |
-| `not-allowed` | <img src="assets/preview/icons/not-allowed.png" width="28"> | `(0.50, 0.50)` | `circle`, `crossed_circle` | Prohibited action or unavailable target. |
-| `no-drop` | <img src="assets/preview/icons/no-drop.png" width="28"> | `(0.16, 0.13)` | `forbidden` | Pointer indicating item cannot be dropped here. |
-| `zoom-in` | <img src="assets/preview/icons/zoom-in.png" width="28"> | `(0.50, 0.50)` | — | Magnifying glass with plus (+) to zoom in. |
-| `zoom-out` | <img src="assets/preview/icons/zoom-out.png" width="28"> | `(0.50, 0.50)` | — | Magnifying glass with minus (-) to zoom out. |
+| `openhand` | <img src="assets/preview/icons/openhand.png" width="36"> | `(0.50, 0.50)` | `grab` | Open hand for grabbing objects or panning canvas. |
+| `dnd-move` | <img src="assets/preview/icons/dnd-move.png" width="36"> | `(0.50, 0.50)` | `closedhand`, `grabbing`, `move` | Closed hand actively grabbing / dragging. |
+| `copy` | <img src="assets/preview/icons/copy.png" width="36"> | `(0.16, 0.13)` | `dnd-copy` | Dragging with duplication / copy badge (+). |
+| `alias` | <img src="assets/preview/icons/alias.png" width="36"> | `(0.16, 0.13)` | `link` | Dragging to create a shortcut / link arrow badge. |
+| `not-allowed` | <img src="assets/preview/icons/not-allowed.png" width="36"> | `(0.50, 0.50)` | `circle`, `crossed_circle` | Prohibited action or unavailable target. |
+| `no-drop` | <img src="assets/preview/icons/no-drop.png" width="36"> | `(0.16, 0.13)` | `forbidden` | Pointer indicating item cannot be dropped here. |
+| `zoom-in` | <img src="assets/preview/icons/zoom-in.png" width="36"> | `(0.50, 0.50)` | — | Magnifying glass with plus (+) to zoom in. |
+| `zoom-out` | <img src="assets/preview/icons/zoom-out.png" width="36"> | `(0.50, 0.50)` | — | Magnifying glass with minus (-) to zoom out. |
 
 </details>
 
