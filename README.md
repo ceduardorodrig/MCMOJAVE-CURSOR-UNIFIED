@@ -8,6 +8,20 @@ A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor 
 
 ---
 
+## 🎨 Visual Showcase & Cursors
+
+<div align="center">
+  <img src="assets/preview/mcmojave-showcase.png" alt="McMojave Cursor Showcase" width="100%">
+</div>
+
+### Animated Busy & Progress Cursors
+
+| `wait` (macOS Beachball) | `progress` (Pointer + Beachball) | Description |
+| :---: | :---: | :--- |
+| <img src="assets/preview/wait.gif" width="48" alt="wait cursor"> | <img src="assets/preview/progress.gif" width="48" alt="progress cursor"> | 24-frame fluid 30ms animated spinning beachball, compiled natively for both Hyprcursor and animated XCursor. |
+
+---
+
 ## 🎯 The Problems in Upstream Ports
 
 While McMojave is one of the cleanest cursor designs for Linux, existing packages on GitHub suffer from critical mathematical flaws that break desktop ergonomics:
