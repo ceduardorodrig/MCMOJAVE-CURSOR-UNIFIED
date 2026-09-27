@@ -18,12 +18,14 @@ flowchart TD
         A1[Libadoxon mcmojave-hyprcursor] -->|Divided 32px canvas by 24| B1[Hotspot displacement: 10px click offset on pointer hand]
         A2[Vinceliuice mcmojave-cursors] -->|0.75 nominal size factor in .cursor| B2[Steam/XWayland 33% oversize bug]
         A3[Theme Fragmentation] -->|McMojave vs McMojave-cursors| B3[Toolkit desync & mismatched fallback assets]
+        A4[GTK settings.ini Silent Override] -->|Wayland: GTK file beats env vars & gsettings| B4[Steam/GTK apps ignore XCURSOR_THEME entirely]
     end
 
     subgraph mcmojave-cursor-unified Fix
         C[Unified Rust Engine] --> D1[Exact Hotspot Calibration: pointer hx=0.39, hy=0.19]
         C --> D2[1:1 Mathematical Scaling: nominal size == bitmap dimensions]
         C --> D3[Dual-Spec Theme: hyprcursors/ + cursors/ in single McMojave namespace]
+        C --> D4[Full Config Guide: GTK settings.ini must be patched explicitly]
     end
 ```
 
@@ -43,15 +45,28 @@ Upstream distributed Hyprcursor under `McMojave` and XCursor under `McMojave-cur
 - **Symptom:** Setting `XCURSOR_THEME="McMojave"` in X11/GTK apps loaded system fallback cursors (Adwaita) because `cursors/` was missing from `McMojave/`.
 - **Fix:** Both specifications (`hyprcursors/` with `.hlc` archives and `cursors/` with X11 binary cursors + 64 legacy symlinks) reside in a single directory: `/usr/share/icons/McMojave`.
 
+### 4. The GTK `settings.ini` Silent Override (Wayland-Only)
+On Wayland sessions, GTK applications (including Steam) resolve the cursor theme by reading `~/.config/gtk-3.0/settings.ini` and `~/.config/gtk-4.0/settings.ini` **directly**, bypassing `XCURSOR_THEME`, `gsettings`, and `~/.icons/default` entirely.
+- **Symptom:** Even with `XCURSOR_THEME=McMojave` in the environment, `gsettings` pointing to `McMojave`, and `/usr/share/icons/default` correctly inheriting `McMojave` — Steam and all GTK apps stubbornly render a different cursor (e.g. `Bibata-Modern-Classic`) because it was set in `settings.ini` by a theme manager and never updated.
+- **Root cause:** On Wayland there is no XSETTINGS daemon bridge; GTK reads its own INI files as the authoritative source for cursor configuration. Environment variables and gsettings are only consulted as fallbacks when `settings.ini` is absent or does not specify the key.
+- **Fix:** Both `gtk-3.0` and `gtk-4.0` `settings.ini` must explicitly declare:
+  ```ini
+  gtk-cursor-theme-name=McMojave
+  gtk-cursor-theme-size=36
+  ```
+  See the [Configuration Guide → GTK section](#2-gtk-2-3-4--gnome--gsettings) below. After editing, restart the affected application — no logout required.
+
 ---
 
 ## 🧵 The Thread
 
 This repository was born out of an everyday desktop frustration: switching between native Wayland applications (running fluidly on Hyprland + Noctalia) and legacy XWayland / Steam games on Arch Linux / CachyOS, only to experience jarring cursor size mismatches and inaccurate click hotspots.
 
-Tracing the issue through compositor logs, XSETTINGS daemons, and upstream source code revealed two distinct bugs that had persisted across the Linux cursor ecosystem:
+Tracing the issue through compositor logs, XSETTINGS daemons, GTK configuration files, and upstream source code revealed four distinct bugs that had persisted across the Linux cursor ecosystem:
 1. An index finger hotspot offset in Hyprcursor vector metadata (`0.67` instead of `0.39`) caused by dividing coordinates by 24 instead of 32.
 2. A hardcoded `0.75` nominal sizing multiplier in upstream XCursor scripts, forcing XWayland / Steam to render cursors 33% larger than native Wayland windows.
+3. Theme namespace fragmentation between `McMojave` (Hyprcursor) and `McMojave-cursors` (XCursor), causing GTK/X11 apps to fall back to system defaults.
+4. On Wayland, GTK `settings.ini` files (`gtk-3.0` / `gtk-4.0`) take authoritative precedence over `XCURSOR_THEME` and `gsettings`, silently overriding the cursor even when all other layers are correctly configured — causing apps like Steam to display a stale cursor set by a theme manager.
 
 Rather than maintaining local patches or brittle shell scripts, this project unifies both specifications into a single canonical `McMojave` theme and provides a pure Rust 2024 compiler to build, calibrate, and package it with mathematical rigor.
 
@@ -104,7 +119,10 @@ export XCURSOR_SIZE=36
 ```
 
 ### 2. GTK (2, 3, 4) & GNOME / GSettings
-In `~/.config/gtk-3.0/settings.ini` (and GTK 4):
+
+> **⚠️ Wayland Priority Warning:** On Wayland sessions, GTK reads `settings.ini` as the **authoritative source** for cursor configuration — overriding `XCURSOR_THEME`, `XCURSOR_SIZE`, and even `gsettings`. If a GUI theme manager (KDE, XFCE, GNOME Tweaks, nwg-look, etc.) previously set a different cursor here, it will silently win. **Always verify `settings.ini` explicitly.**
+
+In `~/.config/gtk-3.0/settings.ini` **and** `~/.config/gtk-4.0/settings.ini`:
 
 ```ini
 [Settings]
@@ -112,7 +130,7 @@ gtk-cursor-theme-name=McMojave
 gtk-cursor-theme-size=36
 ```
 
-Or via GSettings:
+Or via GSettings (Wayland fallback — only applies when `settings.ini` does **not** specify the key):
 ```bash
 gsettings set org.gnome.desktop.interface cursor-theme 'McMojave'
 gsettings set org.gnome.desktop.interface cursor-size 36
