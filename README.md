@@ -74,11 +74,12 @@ Rather than maintaining local patches or brittle shell scripts, this project uni
 
 ## ⚡ Native Rust Compiler Engine
 
-Instead of fragile legacy Bash scripts and Python wrappers, this repository includes an ultra-fast, multi-threaded builder written in **pure Rust (2024 edition)** using `rayon` and `zip`:
+Instead of fragile legacy Bash scripts and Python wrappers, this repository includes an ultra-fast, multi-threaded builder written in **pure Rust (2024 edition)** — with **zero system dependencies**:
 
-- **Parallel Vector Rasterization:** Parallel multi-scale generation (`24px` to `64px`) via `rsvg-convert`.
-- **In-Memory .hlc Archive Generation:** Builds compliant Hyprcursor ZIP archives with clean `meta.hl` descriptors.
-- **XCursor Generation:** Generates multi-size calibrated cursor binaries and creates full alias symlinks.
+- **Native SVG Rasterization:** [`resvg`](https://crates.io/crates/resvg) renders SVGs in-process via `tiny-skia`, parallel across all 7 resolutions (`24px` to `64px`) — no `rsvg-convert`, no forks, no `librsvg` required.
+- **Native XCursor Encoder:** Pure Rust binary encoder writes the XCursor format directly (ARGB pixel layout, multi-size TOC, animated frame support) — no `xcursorgen`, no `xorg-xcursorgen` required.
+- **In-Memory .hlc Archive Generation:** Builds compliant Hyprcursor ZIP archives with clean `meta.hl` descriptors via `rayon` + `zip`.
+- **mtime-aware Cache:** Re-rasterizes only SVGs newer than their cached PNG — incremental rebuilds are instant.
 - **Sub-Second Build:** Compiles the entire dual-spec theme (47 base cursors, 64 symlinks, 7 resolutions) in under **1 second**.
 
 ---
@@ -87,17 +88,31 @@ Instead of fragile legacy Bash scripts and Python wrappers, this repository incl
 
 ### Build & Install from Source
 
-Requirements:
-- `rust` (Cargo, 2024 edition compatible, Rust 1.85+)
+**Requirements:** `rust` (Cargo, 2024 edition, Rust 1.85+) — nothing else.
 
 ```bash
 git clone https://github.com/ceduardorodrig/MCMOJAVE-CURSOR-UNIFIED.git
 cd MCMOJAVE-CURSOR-UNIFIED
-cargo run --release -- --install
 
-# Install system-wide:
-sudo mkdir -p /usr/share/icons/McMojave
-sudo cp -r dist/McMojave/* /usr/share/icons/McMojave/
+# Build + install to /usr/share/icons/McMojave/ + apply to all config layers:
+cargo run --release -- --install
+```
+
+That's it. `--install` handles everything in one command:
+1. Builds the theme (`hyprcursors/` + calibrated `cursors/`)
+2. Copies to `/usr/share/icons/McMojave/` (via `sudo`)
+3. Applies McMojave to all toolkit layers (GTK 3/4, gsettings, Qt, Wayland env, etc.)
+
+**Other useful commands:**
+```bash
+# Re-apply all config layers without rebuilding (e.g. after a theme manager reset):
+./target/release/mcmojave-cursor-unified --apply-only
+
+# Build only (output to dist/McMojave):
+cargo run --release
+
+# Rebuild from scratch:
+cargo run --release -- --clean
 ```
 
 ---
