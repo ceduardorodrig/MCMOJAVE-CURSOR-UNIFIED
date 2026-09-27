@@ -1,6 +1,4 @@
-// Copyright (C) 2026 Carlos Eduardo Rodrigues
-// SPDX-License-Identifier: GPL-3.0-or-later
-
+mod apply;
 mod compiler;
 mod config;
 mod error;
@@ -14,18 +12,30 @@ use compiler::{build_all, BuildPaths};
 
 fn print_help() {
     println!(
-        r#"McMojave Cursor Unified Builder
+        r#"McMojave Cursor Unified — Builder & System Configurator
 
 Usage:
     mcmojave-cursor-unified [OPTIONS]
 
-Options:
+Build options:
     -o, --output <DIR>   Output directory for the compiled theme (default: dist/McMojave)
     -a, --assets <DIR>   Directory containing the original SVGs (default: assets/svg)
     -c, --cache <DIR>    Cache directory for intermediate PNGs (default: target/png-cache)
     --clean              Remove the output and cache directories before building
+
+Apply options:
+    --apply              Apply McMojave cursor to ALL toolkit layers on this system,
+                         then build the theme as usual
+    --apply-only         Apply to all layers WITHOUT rebuilding the theme
+
+General:
     -h, --help           Show this help message
     -v, --version        Show the compiler version
+
+Layers configured by --apply / --apply-only:
+    gsettings · gtk-3.0/settings.ini · gtk-4.0/settings.ini · .gtkrc-2.0
+    xsettingsd.conf · ~/.icons/default · /usr/share/icons/default (sudo)
+    qt5ct.conf (if installed) · qt6ct.conf (if installed) · uwsm/env
 "#
     );
 }
@@ -37,6 +47,8 @@ fn main() -> ExitCode {
     let mut assets_dir = PathBuf::from("assets/svg");
     let mut cache_dir = PathBuf::from("target/png-cache");
     let mut clean_before = false;
+    let mut do_apply = false;
+    let mut apply_only = false;
 
     let mut i = 1;
     while i < args.len() {
@@ -51,6 +63,14 @@ fn main() -> ExitCode {
             }
             "--clean" => {
                 clean_before = true;
+                i += 1;
+            }
+            "--apply" => {
+                do_apply = true;
+                i += 1;
+            }
+            "--apply-only" => {
+                apply_only = true;
                 i += 1;
             }
             "-o" | "--output" => {
@@ -85,6 +105,27 @@ fn main() -> ExitCode {
                 return ExitCode::FAILURE;
             }
         }
+    }
+    // --apply-only: configure all layers and exit (no build)
+    if apply_only {
+        return match apply::apply_all() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(e) => {
+                eprintln!("Apply failed: {e}");
+                ExitCode::FAILURE
+            }
+        };
+    }
+
+    // --apply: configure all layers, then fall through to build
+    if do_apply {
+        if let Err(e) = apply::apply_all() {
+            eprintln!("Apply failed: {e}");
+            return ExitCode::FAILURE;
+        }
+        println!();
+        println!("🔨 Building theme...");
+        println!();
     }
 
     if clean_before {
