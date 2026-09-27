@@ -27,6 +27,8 @@ Apply options:
     --apply              Apply McMojave cursor to ALL toolkit layers on this system,
                          then build the theme as usual
     --apply-only         Apply to all layers WITHOUT rebuilding the theme
+    --install            Build, apply all layers, then install to /usr/share/icons/McMojave/
+                         (requires sudo for the /usr/share write)
 
 General:
     -h, --help           Show this help message
@@ -49,6 +51,7 @@ fn main() -> ExitCode {
     let mut clean_before = false;
     let mut do_apply = false;
     let mut apply_only = false;
+    let mut do_install = false;
 
     let mut i = 1;
     while i < args.len() {
@@ -71,6 +74,10 @@ fn main() -> ExitCode {
             }
             "--apply-only" => {
                 apply_only = true;
+                i += 1;
+            }
+            "--install" => {
+                do_install = true;
                 i += 1;
             }
             "-o" | "--output" => {
@@ -107,6 +114,10 @@ fn main() -> ExitCode {
         }
     }
     // --apply-only: configure all layers and exit (no build)
+    if do_install {
+        do_apply = true;
+    }
+
     if apply_only {
         return match apply::apply_all() {
             Ok(()) => ExitCode::SUCCESS,
@@ -149,7 +160,30 @@ fn main() -> ExitCode {
     };
 
     match build_all(&paths) {
-        Ok(()) => ExitCode::SUCCESS,
+        Ok(()) => {
+            if do_install {
+                println!();
+                println!("📦 Installing to /usr/share/icons/McMojave/...");
+                let install_src = output_dir.to_string_lossy();
+                let status = std::process::Command::new("sudo")
+                    .args(["cp", "-r"])
+                    .arg(format!("{}/.", install_src))
+                    .arg("/usr/share/icons/McMojave/")
+                    .status()
+                    .map_err(|e| { eprintln!("Install failed: {e}"); ExitCode::FAILURE });
+                match status {
+                    Ok(s) if s.success() => {
+                        println!("✅ Installed to /usr/share/icons/McMojave/");
+                    }
+                    Ok(s) => {
+                        eprintln!("Install failed with {s}");
+                        return ExitCode::FAILURE;
+                    }
+                    Err(_) => return ExitCode::FAILURE,
+                }
+            }
+            ExitCode::SUCCESS
+        },
         Err(err) => {
             eprintln!("Build failed: {err}");
             ExitCode::FAILURE

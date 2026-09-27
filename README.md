@@ -4,7 +4,7 @@
 [![Rust](https://img.shields.io/badge/rust-2024%20edition-informational)](https://www.rust-lang.org/)
 [![Wayland](https://img.shields.io/badge/wayland-Hyprland-blueviolet)](https://hyprland.org)
 
-A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor theme for Linux desktops, combining native **Hyprcursor** (vector SVG) and mathematically calibrated **XCursor** (X11 / XWayland) into a single canonical directory with a blazing-fast native Rust compiler.
+A dual-spec, unified modern packaging of the **McMojave** macOS-inspired cursor theme for Linux desktops, combining native **Hyprcursor** (vector SVG) and mathematically calibrated **XCursor** (X11 / XWayland) into a single canonical directory with a blazing-fast native Rust compiler (zero system dependencies).
 
 ---
 
@@ -89,13 +89,11 @@ Instead of fragile legacy Bash scripts and Python wrappers, this repository incl
 
 Requirements:
 - `rust` (Cargo, 2024 edition compatible, Rust 1.85+)
-- `librsvg` (`rsvg-convert`)
-- `xorg-xcursorgen` (`xcursorgen`)
 
 ```bash
 git clone https://github.com/ceduardorodrig/MCMOJAVE-CURSOR-UNIFIED.git
 cd MCMOJAVE-CURSOR-UNIFIED
-cargo run --release
+cargo run --release -- --install
 
 # Install system-wide:
 sudo mkdir -p /usr/share/icons/McMojave

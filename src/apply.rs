@@ -16,7 +16,7 @@
 //!  10.  ~/.config/uwsm/env                     (Hyprland / UWSM session env)
 
 use std::fs;
-use std::io::{self, BufRead, Write};
+use crate::error::AppError;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
@@ -25,7 +25,7 @@ const SIZE: u32 = 36;
 
 // ─── public entry point ───────────────────────────────────────────────────────
 
-pub fn apply_all() -> Result<(), String> {
+pub fn apply_all() -> Result<(), AppError> {
     let home = home_dir()?;
     let mut applied = 0usize;
     let mut skipped = 0usize;
@@ -134,7 +134,7 @@ pub fn apply_all() -> Result<(), String> {
 // ─── layer implementations ────────────────────────────────────────────────────
 
 /// Layer 1 — gsettings
-fn apply_gsettings() -> Result<bool, String> {
+fn apply_gsettings() -> Result<bool, AppError> {
     if which("gsettings").is_none() {
         return Ok(false);
     }
@@ -153,20 +153,20 @@ fn apply_gsettings() -> Result<bool, String> {
 ///   a) Key already present → in-place line replacement
 ///   b) `[Settings]` section exists but key absent → insert after section header
 ///   c) File doesn't exist → create minimal file from scratch
-fn apply_gtk_ini(path: &Path) -> Result<(), String> {
+fn apply_gtk_ini(path: &Path) -> Result<(), AppError> {
     if !path.exists() {
         // Create parent dirs + minimal file
         if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+            fs::create_dir_all(parent)?;
         }
         let content = format!(
             "[Settings]\ngtk-cursor-theme-name={THEME}\ngtk-cursor-theme-size={SIZE}\n"
         );
-        fs::write(path, content).map_err(|e| e.to_string())?;
+        fs::write(path, content)?;
         return Ok(());
     }
 
-    let raw = fs::read_to_string(path).map_err(|e| e.to_string())?;
+    let raw = fs::read_to_string(path)?;
     let mut lines: Vec<String> = raw.lines().map(str::to_owned).collect();
 
     let mut found_name = false;
@@ -192,12 +192,23 @@ fn apply_gtk_ini(path: &Path) -> Result<(), String> {
                 break;
             }
         }
-        let pos = insert_after.unwrap_or(lines.len());
-        if !found_size {
-            lines.insert(pos + 1, format!("gtk-cursor-theme-size={SIZE}"));
-        }
-        if !found_name {
-            lines.insert(pos + 1, format!("gtk-cursor-theme-name={THEME}"));
+        
+        if let Some(pos) = insert_after {
+            // [Settings] exists — insert keys right after the section header
+            if !found_size {
+                lines.insert(pos + 1, format!("gtk-cursor-theme-size={SIZE}"));
+            }
+            if !found_name {
+                lines.insert(pos + 1, format!("gtk-cursor-theme-name={THEME}"));
+            }
+        } else {
+            // No [Settings] section — prepend it with the keys
+            let mut new_lines = vec!["[Settings]".to_owned()];
+            new_lines.push(format!("gtk-cursor-theme-name={THEME}"));
+            new_lines.push(format!("gtk-cursor-theme-size={SIZE}"));
+            new_lines.push(String::new()); // blank line separator
+            new_lines.extend(lines.drain(..));
+            lines = new_lines;
         }
     }
 
@@ -205,13 +216,13 @@ fn apply_gtk_ini(path: &Path) -> Result<(), String> {
     if !out.ends_with('\n') {
         out.push('\n');
     }
-    fs::write(path, out).map_err(|e| e.to_string())
+    fs::write(path, out).map_err(AppError::from)
 }
 
 /// Layer 4 — ~/.gtkrc-2.0 (GTK2 key=value format, no sections)
-fn apply_gtkrc2(path: &Path) -> Result<(), String> {
+fn apply_gtkrc2(path: &Path) -> Result<(), AppError> {
     let existing = if path.exists() {
-        fs::read_to_string(path).map_err(|e| e.to_string())?
+        fs::read_to_string(path)?
     } else {
         String::new()
     };
@@ -242,16 +253,16 @@ fn apply_gtkrc2(path: &Path) -> Result<(), String> {
     if !out.ends_with('\n') {
         out.push('\n');
     }
-    fs::write(path, out).map_err(|e| e.to_string())
+    fs::write(path, out).map_err(AppError::from)
 }
 
 /// Layer 5 — xsettingsd.conf (only touch if file exists; daemon-managed)
-fn apply_xsettingsd(path: &Path) -> Result<bool, String> {
+fn apply_xsettingsd(path: &Path) -> Result<bool, AppError> {
     if !path.exists() {
         return Ok(false);
     }
 
-    let raw = fs::read_to_string(path).map_err(|e| e.to_string())?;
+    let raw = fs::read_to_string(path)?;
     let mut lines: Vec<String> = raw.lines().map(str::to_owned).collect();
     let mut found_name = false;
     let mut found_size = false;
@@ -278,23 +289,23 @@ fn apply_xsettingsd(path: &Path) -> Result<bool, String> {
     if !out.ends_with('\n') {
         out.push('\n');
     }
-    fs::write(path, out).map_err(|e| e.to_string())?;
+    fs::write(path, out)?;
     Ok(true)
 }
 
 /// Layer 6 — ~/.icons/default/index.theme
-fn apply_icons_default(path: &Path) -> Result<(), String> {
+fn apply_icons_default(path: &Path) -> Result<(), AppError> {
     if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+        fs::create_dir_all(parent)?;
     }
     let content = format!(
         "[Icon Theme]\nName=Default\nComment=Default Cursor Theme\nInherits={THEME}\n"
     );
-    fs::write(path, content).map_err(|e| e.to_string())
+    fs::write(path, content).map_err(AppError::from)
 }
 
 /// Layer 7 — /usr/share/icons/default/index.theme (needs root)
-fn apply_sys_default(path: &Path) -> Result<bool, String> {
+fn apply_sys_default(path: &Path) -> Result<bool, AppError> {
     if which("sudo").is_none() {
         return Ok(false);
     }
@@ -305,22 +316,25 @@ fn apply_sys_default(path: &Path) -> Result<bool, String> {
          Inherits={THEME}\n"
     );
 
-    // Write to a temp file, then sudo mv into place
     let tmp = PathBuf::from(format!("/tmp/mcmojave-default-{}.theme", std::process::id()));
-    fs::write(&tmp, &content).map_err(|e| e.to_string())?;
+    fs::write(&tmp, &content)?;
 
-    // Ensure parent exists
     let parent = path.parent().unwrap_or(Path::new("/usr/share/icons/default"));
-    run_cmd("sudo", &["mkdir", "-p", &parent.to_string_lossy()])?;
-    run_cmd("sudo", &["cp", &tmp.to_string_lossy(), &path.to_string_lossy()])?;
 
-    let _ = fs::remove_file(&tmp);
-    Ok(true)
+    let result = (|| -> Result<(), AppError> {
+        run_cmd("sudo", &["mkdir", "-p", &parent.to_string_lossy()])?;
+        run_cmd("sudo", &["cp", &tmp.to_string_lossy(), &path.to_string_lossy()])?;
+        Ok(())
+    })();
+
+    let _ = fs::remove_file(&tmp); // always cleanup, regardless of result
+
+    result.map(|()| true)
 }
 
 /// Layers 8 & 9 — qt5ct / qt6ct INI (same format, different paths)
-fn apply_qtct(path: &Path) -> Result<(), String> {
-    let raw = fs::read_to_string(path).map_err(|e| e.to_string())?;
+fn apply_qtct(path: &Path) -> Result<(), AppError> {
+    let raw = fs::read_to_string(path)?;
     let mut lines: Vec<String> = raw.lines().map(str::to_owned).collect();
     let mut found_cursor = false;
     let mut in_appearance = false;
@@ -355,12 +369,12 @@ fn apply_qtct(path: &Path) -> Result<(), String> {
     if !out.ends_with('\n') {
         out.push('\n');
     }
-    fs::write(path, out).map_err(|e| e.to_string())
+    fs::write(path, out).map_err(AppError::from)
 }
 
 /// Layer 10 — ~/.config/uwsm/env (shell export format)
-fn apply_uwsm_env(path: &Path) -> Result<(), String> {
-    let raw = fs::read_to_string(path).map_err(|e| e.to_string())?;
+fn apply_uwsm_env(path: &Path) -> Result<(), AppError> {
+    let raw = fs::read_to_string(path)?;
     let mut lines: Vec<String> = raw.lines().map(str::to_owned).collect();
 
     let mut found_xcursor = false;
@@ -415,15 +429,15 @@ fn apply_uwsm_env(path: &Path) -> Result<(), String> {
     if !out.ends_with('\n') {
         out.push('\n');
     }
-    fs::write(path, out).map_err(|e| e.to_string())
+    fs::write(path, out).map_err(AppError::from)
 }
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
-fn home_dir() -> Result<PathBuf, String> {
+fn home_dir() -> Result<PathBuf, AppError> {
     std::env::var("HOME")
         .map(PathBuf::from)
-        .map_err(|_| "HOME environment variable not set".to_owned())
+        .map_err(|_| AppError::Custom("HOME environment variable not set".to_owned()))
 }
 
 fn which(bin: &str) -> Option<()> {
@@ -435,22 +449,15 @@ fn which(bin: &str) -> Option<()> {
         .map(|_| ())
 }
 
-fn run_cmd(program: &str, args: &[&str]) -> Result<(), String> {
+fn run_cmd(program: &str, args: &[&str]) -> Result<(), AppError> {
     let status = Command::new(program)
         .args(args)
         .status()
-        .map_err(|e| format!("failed to run `{program}`: {e}"))?;
+        .map_err(|e| AppError::Custom(format!("failed to run `{program}`: {e}")))?;
     if status.success() {
         Ok(())
     } else {
-        Err(format!("`{program} {}` exited with {status}", args.join(" ")))
+        Err(AppError::Custom(format!("`{program} {}` exited with {status}", args.join(" "))))
     }
 }
 
-// suppress unused import warning — BufRead brought in for potential future use
-#[allow(dead_code)]
-fn _use_bufread<R: BufRead>(_: R) {}
-#[allow(dead_code)]
-fn _use_write<W: Write>(_: W) {}
-#[allow(dead_code)]
-fn _use_io(_: io::Error) {}
