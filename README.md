@@ -119,11 +119,30 @@ cargo run --release -- --clean
 
 ## ⚙️ Configuration Guide
 
-To ensure consistent cursor rendering across all Wayland and X11 toolkits:
+> **TL;DR:** `cargo run --release -- --install` configures everything automatically.
+> The sections below are for reference or manual overrides only.
 
-### 1. Hyprland & Wayland Session
-In your Hyprland configuration or `~/.config/uwsm/env`:
+`--install` (and `--apply-only`) automatically writes McMojave to **all** of these layers:
 
+| Layer | File / Command |
+|---|---|
+| Wayland session env | `~/.config/uwsm/env` (`HYPRCURSOR_THEME`, `XCURSOR_THEME`) |
+| GTK 3 | `~/.config/gtk-3.0/settings.ini` |
+| GTK 4 | `~/.config/gtk-4.0/settings.ini` |
+| GTK 2 | `~/.gtkrc-2.0` |
+| GSettings | `org.gnome.desktop.interface cursor-theme` |
+| xsettingsd | `~/.config/xsettingsd/xsettingsd.conf` |
+| X11 fallback | `~/.icons/default/index.theme` |
+| System fallback | `/usr/share/icons/default/index.theme` (via sudo) |
+| Qt 5/6 | `~/.config/qt5ct/qt5ct.conf`, `~/.config/qt6ct/qt6ct.conf` |
+
+---
+
+### Manual Configuration (reference)
+
+If you prefer to configure layers individually:
+
+#### Hyprland / Wayland session (`~/.config/uwsm/env` or hyprland.conf):
 ```bash
 export HYPRCURSOR_THEME="McMojave"
 export HYPRCURSOR_SIZE=36
@@ -131,11 +150,9 @@ export XCURSOR_THEME="McMojave"
 export XCURSOR_SIZE=36
 ```
 
-### 2. GTK (2, 3, 4) & GNOME / GSettings
+#### GTK 3 & 4 (`~/.config/gtk-{3,4}.0/settings.ini`):
 
-> **⚠️ Wayland Priority Warning:** On Wayland sessions, GTK reads `settings.ini` as the **authoritative source** for cursor configuration — overriding `XCURSOR_THEME`, `XCURSOR_SIZE`, and even `gsettings`. If a GUI theme manager (KDE, XFCE, GNOME Tweaks, nwg-look, etc.) previously set a different cursor here, it will silently win. **Always verify `settings.ini` explicitly.**
-
-In `~/.config/gtk-3.0/settings.ini` **and** `~/.config/gtk-4.0/settings.ini`:
+> **⚠️ Wayland Priority Warning:** On Wayland, GTK reads `settings.ini` as the **authoritative source**, overriding `XCURSOR_THEME` and even `gsettings`. If a theme manager (nwg-look, GNOME Tweaks, etc.) previously set a different cursor here, it silently wins. **Always verify `settings.ini` explicitly** — or just run `--apply-only` after any theme manager change.
 
 ```ini
 [Settings]
@@ -143,42 +160,32 @@ gtk-cursor-theme-name=McMojave
 gtk-cursor-theme-size=36
 ```
 
-Or via GSettings (Wayland fallback — only applies when `settings.ini` does **not** specify the key):
+#### GSettings (fallback — only if `settings.ini` does not set the key):
 ```bash
 gsettings set org.gnome.desktop.interface cursor-theme 'McMojave'
 gsettings set org.gnome.desktop.interface cursor-size 36
 ```
 
-### 3. Qt (5 & 6)
-In `~/.config/qt6ct/qt6ct.conf`:
+#### Qt 5 & 6 (`~/.config/qt6ct/qt6ct.conf`):
 ```ini
 [Appearance]
 cursor=McMojave
 cursor_size=36
 ```
 
-### 4. Steam, Wine & Stubborn X11 Apps
-Steam and older X11 applications read cursor settings via the **XSETTINGS** protocol and fall back to `~/.local/share/icons/default`.
+#### Steam / Wine / stubborn X11 apps (xsettingsd):
+```ini
+# ~/.config/xsettingsd/xsettingsd.conf
+Gtk/CursorThemeName "McMojave"
+Gtk/CursorThemeSize 36
+```
 
-1. **`xsettingsd` configuration** (`~/.config/xsettingsd/xsettingsd.conf`):
-   ```ini
-   Gtk/CursorThemeName "McMojave"
-   Gtk/CursorThemeSize 36
-   ```
-   Run `xsettingsd` as a systemd user service.
-
-2. **Xresources** (`~/.Xresources`):
-   ```text
-   Xcursor.theme: McMojave
-   Xcursor.size: 36
-   ```
-   Apply with `xrdb -merge ~/.Xresources`.
-
-3. **Steam Physical Fallback** (Steam sandbox does not follow symlinks):
-   ```bash
-   mkdir -p ~/.local/share/icons/default
-   cp -r /usr/share/icons/McMojave/cursors ~/.local/share/icons/default/
-   ```
+#### Xresources (legacy X11):
+```text
+Xcursor.theme: McMojave
+Xcursor.size: 36
+```
+Apply with `xrdb -merge ~/.Xresources`.
 
 ---
 
