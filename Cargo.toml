@@ -13,6 +13,6 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 rayon = "1.10"
-zip = { version = "2.2", default-features = false, features = ["deflate"] }
+zip = { version = "9.0", default-features = false, features = ["deflate"] }
 resvg = "0.44"
 thiserror = "2"
