@@ -8,7 +8,7 @@ This repository contains **MCMOJAVE-CURSOR-UNIFIED**, a dual-spec cursor theme (
 
 When modifying any file in this repository, follow these mandatory governance rules:
 
-**Language Tier:** A (Public OSS) — see [language-policy.md](file:///mnt/NVME_PCI/agentic-ai/governance/language-policy.md). All logs, CLI strings, documentation, and comments MUST be in English.
+**Language Tier:** A (Public OSS) — see the StenioSentinel language policy (Tier A). All logs, CLI strings, documentation, and comments MUST be in English.
 
 ## 🦀 Rust Standards & Integrity
 
